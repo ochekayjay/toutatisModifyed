@@ -94,6 +94,7 @@ def advanced_lookup(username):
 
 
 def main():
+    mainObj = {}
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--sessionid', help="Instagram session ID", required=True)
     group = parser.add_mutually_exclusive_group(required=True)
@@ -110,27 +111,40 @@ def main():
 
     infos = infos["user"]
 
-    print("Informations about     : " + infos["username"])
-    print("userID                 : " + infos["userID"])
-    print("Full Name              : " + infos["full_name"])
-    print("Verified               : " + str(infos['is_verified']) + " | Is buisness Account : " + str(
-        infos["is_business"]))
-    print("Is private Account     : " + str(infos["is_private"]))
-    print(
-        "Follower               : " + str(infos["follower_count"]) + " | Following : " + str(infos["following_count"]))
-    print("Number of posts        : " + str(infos["media_count"]))
-    # print("Number of tag in posts : "+str(infos["following_tag_count"]))
-    if infos["external_url"]:
-        print("External url           : " + infos["external_url"])
+    #print("Informations about     : " + infos["username"])
+    #print("userID                 : " + infos["userID"])
+    #print("Full Name              : " + infos["full_name"])
+    #print("Verified               : " + str(infos['is_verified']) + " | Is buisness Account : " + str(infos["is_business"]))
+    #print("Is private Account     : " + str(infos["is_private"]))
+    #print("Follower               : " + str(infos["follower_count"]) + " | Following : " + str(infos["following_count"]))
+    #print("Number of posts        : " + str(infos["media_count"]))
+    ## print("Number of tag in posts : "+str(infos["following_tag_count"]))
+    #if infos["external_url"]:
+        #print("External url           : " + infos["external_url"])
     #print("IGTV posts             : " + str(infos["total_igtv_videos"]))
-    print("Biography              : " + (f"""\n{" " * 25}""").join(infos["biography"].split("\n")))
-    print("Linked WhatsApp        : " + str(infos["is_whatsapp_linked"]))
-    print("Memorial Account       : " + str(infos["is_memorialized"]))
-    print("New Instagram user     : " + str(infos["is_new_to_instagram"]))
-
+    #print("Biography              : " + (f"""\n{" " * 25}""").join(infos["biography"].split("\n")))
+    #print("Linked WhatsApp        : " + str(infos["is_whatsapp_linked"]))
+    #print("Memorial Account       : " + str(infos["is_memorialized"]))
+    #print("New Instagram user     : " + str(infos["is_new_to_instagram"]))
+    mainObj['username'] = infos['username']
+    mainObj['userID'] = infos['userID']
+    mainObj['full_name'] = infos['full_name']
+    mainObj['is_verified'] = str(infos['is_verified'])
+    mainObj['is_business'] = str(infos['is_business'])
+    mainObj['is_private'] = str(infos['is_private'])
+    mainObj['follower_count'] = str(infos['follower_count'])
+    mainObj['following_count'] = str(infos["following_count"])
+    mainObj['Biography'] = (f"""\n{" " * 25}""").join(infos["biography"].split("\n"))
+    mainObj['media_count'] = str(infos['media_count'])
+    mainObj['external_url'] = infos['external_url']
+    mainObj['is_whatsapp_linked'] = str(infos['is_whatsapp_linked'])
+    mainObj['is_memorialized'] = str(infos['is_memorialized'])
+    mainObj['is_new_to_instagram'] = str(infos['is_new_to_instagram'])
+    
     if "public_email" in infos.keys():
         if infos["public_email"]:
-            print("Public Email           : " + infos["public_email"])
+            #print("Public Email           : " + infos["public_email"])
+            mainObj['public_email'] = infos['public_email']
 
     if "public_phone_number" in infos.keys():
         if str(infos["public_phone_number"]):
@@ -142,7 +156,9 @@ def main():
                 phonenr = phonenr + " ({}) ".format(country.name)
             except:  # except what ??
                 pass  # pass what ??
-            print("Public Phone number    : " + phonenr)
+            #print("Public Phone number    : " + phonenr)
+            mainObj['phone_number'] = "0"+  str(infos["public_phone_number"])
+            
 
     other_infos = advanced_lookup(infos["username"])
 
@@ -151,21 +167,29 @@ def main():
 
     elif "message" in other_infos["user"].keys():
         if other_infos["user"]["message"] == "No users found":
-            print("The lookup did not work on this account")
+            nay = ''
+            #print("The lookup did not work on this account")
         else:
-            print(other_infos["user"]["message"])
+            jay =''
+            #print(other_infos["user"]["message"])
 
     else:
         if "obfuscated_email" in other_infos["user"].keys():
             if other_infos["user"]["obfuscated_email"]:
-                print("Obfuscated email       : " + other_infos["user"]["obfuscated_email"])
+                #print("Obfuscated email       : " + other_infos["user"]["obfuscated_email"])
+                pass
             else:
-                print("No obfuscated email found")
+                #print("No obfuscated email found")
+                pass
 
         if "obfuscated_phone" in other_infos["user"].keys():
             if str(other_infos["user"]["obfuscated_phone"]):
-                print("Obfuscated phone       : " + str(other_infos["user"]["obfuscated_phone"]))
+                #print("Obfuscated phone       : " + str(other_infos["user"]["obfuscated_phone"]))
+                pass
             else:
-                print("No obfuscated phone found")
-    print("-" * 24)
-    print("Profile Picture        : " + infos["hd_profile_pic_url_info"]["url"])
+                #print("No obfuscated phone found")
+                pass
+    #print("-" * 24)
+    #print("Profile Picture        : " + infos["hd_profile_pic_url_info"]["url"])
+    #return mainObj
+    print(dumps(mainObj)) 
